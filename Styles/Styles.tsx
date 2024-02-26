@@ -1,0 +1,92 @@
+import { StyleSheet } from "react-native";
+
+export const Styles = StyleSheet.create({
+  button: {
+    margin: 6,
+    fontSize: 100,
+    fontWeight: "700",
+    borderRadius: 8,
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  testContainer: {
+    backgroundColor: "white",
+    height: 100,
+    width: "100%",
+    padding: 10,
+  },
+  header: {
+    marginTop: 10,
+    marginLeft: 15,
+    marginRight: 15,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#f2f1ff",
+    padding: 25,
+    paddingTop: 15,
+    paddingBottom: 15,
+    borderRadius: 10,
+  },
+  headerText: {
+    fontSize: 20,
+    color: "#4e4e50",
+    fontWeight: "500",
+  },
+  subSection: {
+    backgroundColor: "#f7f7f7",
+    marginTop: 2,
+    marginLeft: 15,
+    marginRight: 15,
+    borderRadius: 10,
+  },
+  subSectionContainer: {
+    height:45,
+    marginTop: 10,
+    marginLeft: 15,
+    marginRight: 15,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 10,
+  },
+  subSectionText: {
+    fontSize: 14,
+    color: "#4e4e50",
+    fontWeight: "500",
+  },
+  manualConatiner: {
+    marginLeft: 25,
+    marginRight: 25,
+    marginTop:10,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap:10,
+    backgroundColor: "white",
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 10,
+  },
+  manualButtons: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems:"center",
+    gap:10,
+
+  },
+  submitBtn: {
+    backgroundColor:"white",
+    marginTop:10,
+    marginLeft:25,
+    marginRight:25,
+    marginBottom:10,
+    borderRadius:10
+  }
+});
