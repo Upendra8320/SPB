@@ -60,6 +60,9 @@ const TestScreen = () => {
     });
 
     sendMsgAndHoldForResponse(`E,${config.motorValue}`);
+    await new Promise(resolve => setTimeout(() => resolve(true), 2000));
+    sendMsgAndHoldForResponse(`Q,${config.engineValue}`);
+    await new Promise(resolve => setTimeout(() => resolve(true), 2000));
     const message: any = 'A';
     const resA: any = await sendMsgAndHoldForResponse(message);
 
@@ -115,7 +118,7 @@ const TestScreen = () => {
           setResponse((prev: any) => ({...prev, [command]: res}));
         } else {
           if (command === 'D') test1Result[command] = '0';
-          break; 
+          break;
         }
       }
     } else {
@@ -139,8 +142,6 @@ const TestScreen = () => {
     setTestState((prev: any) => {
       return {...prev, MajorTest: 'Test2'};
     });
-    // socket.send(`Q,${config.engineValue}`);
-    sendMsgAndHoldForResponse(`Q,${config.engineValue}`);
     const resM: any = await sendMsgAndHoldForResponse('M');
     let splitRes = resM.split(',')[1];
     Toaster(`Rx M ${splitRes[1]}`);
@@ -292,6 +293,7 @@ const TestScreen = () => {
       setTestState((prev: any) => {
         return {...prev, MajorTest: ''};
       });
+      await new Promise(resolve => setTimeout(() => resolve(true), 2000));
       const test2Results = await lightTest();
       setTestState((prev: any) => {
         return {...prev, Test2: test2Results.P};
