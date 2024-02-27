@@ -5,10 +5,12 @@ import {Button} from 'react-native-paper';
 
 const HomeScreen = ({navigation}: {navigation: any}) => {
   const saveConfigLogs = async () => {
-    
     try {
-      const jsonValue = JSON.stringify({motorValue: '2', engineValue: '2'});
-      await AsyncStorage.setItem('@config_logs', jsonValue);
+      const getConfigValue = await AsyncStorage.getItem('@config_logs');
+      const savedConfig = getConfigValue != null && JSON.parse(getConfigValue);
+      if (savedConfig) return;
+      const defaultConfig = JSON.stringify({motorValue: '2', engineValue: '2'});
+      await AsyncStorage.setItem('@config_logs', defaultConfig);
     } catch (e) {}
   };
 
@@ -59,15 +61,15 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '65%',
-    height: '100%'
+    height: '100%',
   },
   imageView: {
     // borderWidth:1,
-    display:"flex",
+    display: 'flex',
     // justifyContent: "center",
-    alignItems: "center",
+    alignItems: 'center',
     width: '60%',
-    height:"20%"
+    height: '20%',
   },
 });
 

@@ -101,11 +101,11 @@ const TestDetails = ({
   testResults: any;
 }) => {
   const logsDescription: any = {
-    B: 'Turn on Switch',
-    C: 'Engine Value',
+    B: 'Switch Status',
+    C: 'Measured Current',
     D: 'Final status',
-    N: 'Turn on Switch',
-    O: 'Engine Value',
+    N: 'Switch Status',
+    O: 'Measured Current',
     P: 'Final status',
     T1: 'Manual Test1',
     T2: 'Manual Test2',
@@ -118,7 +118,7 @@ const TestDetails = ({
 
   const testNames: any = {
     Test1: 'Fireman Pump',
-    Test2: 'Light Test',
+    Test2: 'Navigation Light',
     Test3: 'Manual test',
   };
 

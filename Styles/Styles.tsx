@@ -31,7 +31,7 @@ export const Styles = StyleSheet.create({
     borderRadius: 10,
   },
   headerText: {
-    fontSize: 20,
+    fontSize: 22,
     color: "#4e4e50",
     fontWeight: "500",
   },

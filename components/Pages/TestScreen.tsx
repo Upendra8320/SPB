@@ -1,12 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {ScrollView, Text, ToastAndroid, View} from 'react-native';
 import {Avatar, Button, RadioButton} from 'react-native-paper';
 import {Styles} from '../../Styles/Styles';
 import ConfirmationModal from '../Utils/ConfiramtionModel';
-import {socket} from '../Utils/SocketConnection';
+import {ConnectionStatusContext} from '../Utils/ConnectionStatusContext';
 
 const TestScreen = () => {
+  const {setSocketConnected} = useContext(ConnectionStatusContext);
+  const [socket, setSocket] = useState<any>({});
+
+  useEffect(() => {}, []);
+
   const [RadioButtonValue, setRadioButonValue] = useState({
     gps: '',
     lights: '',
@@ -406,22 +411,30 @@ const TestScreen = () => {
   };
 
   useEffect(() => {
+    const socket = new WebSocket('ws://192.168.10.19:8080');
+
     socket.onopen = () => {
       ToastAndroid.show('Connection Successful', ToastAndroid.LONG);
+      setSocketConnected(true);
     };
-    socket.onerror = e => {
+    socket.onerror = (e: any) => {
       ToastAndroid.show(
         `Connection Failed ${e.type} ${e.message}`,
         ToastAndroid.LONG,
       );
+
+      setSocketConnected(false);
     };
-    socket.onclose = e => {
+    socket.onclose = (e: any) => {
+      ToastAndroid.show('Connection Closed', ToastAndroid.SHORT);
+      setSocketConnected(false);
+    };
+    setSocket(socket);
+    return () => {
+      socket.close();
+      setSocketConnected(false);
       ToastAndroid.show('Connection Closed', ToastAndroid.SHORT);
     };
-    // return ()=>{
-    //   socket.close();
-    //   ToastAndroid.show("Connection Closed", ToastAndroid.SHORT);
-    // }
   }, []);
 
   useEffect(() => {
@@ -476,7 +489,7 @@ const TestScreen = () => {
           <View style={Styles.subSection}>
             <View style={Styles.subSectionContainer}>
               <View>
-                <Text style={Styles.subSectionText}>1. Turn On the Switch</Text>
+                <Text style={Styles.subSectionText}>1. Turn On Switch</Text>
               </View>
               <View>
                 <Text
@@ -506,7 +519,7 @@ const TestScreen = () => {
             </View>
             <View style={Styles.subSectionContainer}>
               <View>
-                <Text style={Styles.subSectionText}>2. Fireman Pump</Text>
+                <Text style={Styles.subSectionText}>2. Measured Current</Text>
               </View>
               <View>
                 <Text style={{color: '#a3a3a3'}}>
@@ -554,7 +567,7 @@ const TestScreen = () => {
         <View>
           <View style={Styles.header}>
             <View>
-              <Text style={Styles.headerText}>Lights Test</Text>
+              <Text style={Styles.headerText}>Navigation Lights</Text>
             </View>
             <View>
               <Text>
@@ -582,7 +595,7 @@ const TestScreen = () => {
           <View style={Styles.subSection}>
             <View style={Styles.subSectionContainer}>
               <View>
-                <Text style={Styles.subSectionText}>1. Turn On the Switch</Text>
+                <Text style={Styles.subSectionText}>1. Turn On Switch</Text>
               </View>
               <View>
                 <Text>
@@ -609,7 +622,7 @@ const TestScreen = () => {
             </View>
             <View style={Styles.subSectionContainer}>
               <View>
-                <Text style={Styles.subSectionText}>2. Lights Value</Text>
+                <Text style={Styles.subSectionText}>2. Measured Current</Text>
               </View>
               <View>
                 <Text style={{color: '#a3a3a3'}}>
