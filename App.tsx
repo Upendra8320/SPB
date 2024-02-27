@@ -1,10 +1,9 @@
-import React from 'react';
-import {StyleSheet, Text} from 'react-native';
-import { ConnectionStatusProvider } from './components/Utils/ConnectionStatusContext';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {lazy} from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { lazy } from 'react';
+import { StyleSheet } from 'react-native';
 import Header from './components/Layout/Header';
+import { ConnectionStatusProvider } from './components/Utils/ConnectionStatusContext';
 // import ConfigScreen from './components/Pages/ConfigScreen';
 // import LogScreen from './components/Pages/LogScreen';
 // import TestScreen from './components/Pages/TestScreen';

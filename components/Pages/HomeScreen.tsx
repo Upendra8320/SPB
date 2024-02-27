@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useEffect} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {Button} from 'react-native-paper';
+import React, { useEffect } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { Button } from 'react-native-paper';
 
 const HomeScreen = ({navigation}: {navigation: any}) => {
   const saveConfigLogs = async () => {
@@ -42,7 +42,7 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
         <Text style={styles.text}>Settings</Text>
       </Button>
       <View style={styles.imageView}>
-        <Image source={require('../../assets/logo.png')} style={styles.image} />
+        <Image source={require('../../assets/HomeScreenLogo.png')} style={styles.image} />
       </View>
     </View>
   );

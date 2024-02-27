@@ -1,12 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useContext, useEffect, useState} from 'react';
-import {ScrollView, Text, ToastAndroid, View} from 'react-native';
-import {Avatar, Button, RadioButton} from 'react-native-paper';
-import {Styles} from '../../Styles/Styles';
-import ConfirmationModal from '../Utils/ConfiramtionModel';
-import {ConnectionStatusContext} from '../Utils/ConnectionStatusContext';
+import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useEffect, useState } from 'react';
+import { ScrollView, Text, ToastAndroid, View } from 'react-native';
+import { Avatar, Button, RadioButton } from 'react-native-paper';
+import { Styles } from '../../Styles/Styles';
+import ConfirmationModal from '../Utils/ConfirmationModel';
+import { ConnectionStatusContext } from '../Utils/ConnectionStatusContext';
 
 const TestScreen = () => {
+  const navigation = useNavigation();
   const {setSocketConnected} = useContext(ConnectionStatusContext);
   const [socket, setSocket] = useState<any>({});
 
@@ -320,7 +322,8 @@ const TestScreen = () => {
   };
 
   const handleFinalTest = async (e: any) => {
-    ToastAndroid.show('Manual Test Completed', ToastAndroid.SHORT);
+    ToastAndroid.show('Test Completed', ToastAndroid.SHORT);
+    navigation.navigate("Home" as never);
     // e.preventDefault();
     // const Test3Res = {
     //   T1: RadioButtonValue.gps,
@@ -411,8 +414,8 @@ const TestScreen = () => {
   };
 
   useEffect(() => {
-    const socket = new WebSocket('ws://192.168.4.1:80/ws');
-
+    // const socket = new WebSocket('ws://192.168.4.1:80/ws');
+    const socket = new WebSocket('ws://192.168.10.19:8080');
     socket.onopen = () => {
       ToastAndroid.show('Connection Successful', ToastAndroid.LONG);
       setSocketConnected(true);
