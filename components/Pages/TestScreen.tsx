@@ -411,7 +411,7 @@ const TestScreen = () => {
   };
 
   useEffect(() => {
-    const socket = new WebSocket('ws://192.168.10.19:8080');
+    const socket = new WebSocket('ws://192.168.4.1:80/ws');
 
     socket.onopen = () => {
       ToastAndroid.show('Connection Successful', ToastAndroid.LONG);
