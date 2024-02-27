@@ -18,16 +18,20 @@ const Header = () => {
         <Image source={require('../../assets/logo.png')} style={styles.image} />
         <Text style={styles.text}>SPB STAY READY</Text>
       </View>
-      {route.name === 'Test' && socketConnected ? (
-        <Avatar.Image
-          size={24}
-          source={require('../../assets/smallDone.png')}
-        />
-      ) : (
-        <Avatar.Image
-          size={24}
-          source={require('../../assets/smallFailed.png')}
-        />
+      {route.name === 'Test' && (
+        <>
+          {socketConnected ? (
+            <Avatar.Image
+              size={24}
+              source={require('../../assets/smallDone.png')}
+            />
+          ) : (
+            <Avatar.Image
+              size={24}
+              source={require('../../assets/smallFailed.png')}
+            />
+          )}
+        </>
       )}
     </View>
   );

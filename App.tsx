@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import { ConnectionStatusProvider } from './components/Utils/ConnectionStatusContext';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -32,7 +32,6 @@ function App(): React.JSX.Element {
           component={Test}
           options={{
             headerTitle: () => <Header />,
-            headerLeft: () => null,
           }}
         />
         <Stack.Screen
