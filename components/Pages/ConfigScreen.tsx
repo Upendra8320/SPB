@@ -3,8 +3,9 @@ import {View, Text, StyleSheet, ScrollView, ToastAndroid} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Button, List, Avatar, TextInput} from 'react-native-paper';
 import {Styles} from '../../Styles/Styles';
-
+import { useNavigation } from '@react-navigation/native';
 const ConfigScreen = () => {
+  const navigation = useNavigation();
   const [config, setConfig] = useState({motorValue: '', engineValue: ''});
 
   //get log
@@ -18,7 +19,8 @@ const ConfigScreen = () => {
     try {
       const jsonValue = JSON.stringify(config);
       await AsyncStorage.setItem('@config_logs', jsonValue);
-      ToastAndroid.show('Successfull', ToastAndroid.SHORT);
+      ToastAndroid.show('Successful', ToastAndroid.SHORT);
+      navigation.navigate("Home" as never);
     } catch (e) {
       ToastAndroid.show('failed', ToastAndroid.SHORT);
     }

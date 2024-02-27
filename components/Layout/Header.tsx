@@ -8,9 +8,6 @@ const Header = () => {
   const route = useRoute();
 
   const {socketConnected} = useContext(ConnectionStatusContext);
-  // console.log('socketConnected: ', socketConnected);
-
-  console.log(route.name);
 
   return (
     <View style={styles.maincontainer}>

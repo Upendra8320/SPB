@@ -14,7 +14,7 @@ const TestScreen = () => {
   const [RadioButtonValue, setRadioButonValue] = useState({
     gps: '',
     lights: '',
-  });
+  }); 
   const [response, setResponse] = useState<any>({});
   const [loader, setLoader] = useState<any>({});
   const [TestState, setTestState] = useState<any>({
@@ -320,7 +320,7 @@ const TestScreen = () => {
 
   const handleFinalTest = async (e: any) => {
     ToastAndroid.show('Test Completed', ToastAndroid.SHORT);
-    navigation.navigate("Home" as never);
+    navigation.navigate("Log" as never);
     // e.preventDefault();
     // const Test3Res = {
     //   T1: RadioButtonValue.gps,
