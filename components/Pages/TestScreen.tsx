@@ -64,9 +64,9 @@ const TestScreen = () => {
     });
 
     sendMsgAndHoldForResponse(`E,${config.motorValue}`);
-    await new Promise(resolve => setTimeout(() => resolve(true), 2000));
+    await new Promise(resolve => setTimeout(() => resolve(true), 500));
     sendMsgAndHoldForResponse(`Q,${config.engineValue}`);
-    await new Promise(resolve => setTimeout(() => resolve(true), 2000));
+    await new Promise(resolve => setTimeout(() => resolve(true), 500));
     const message: any = 'A';
     const resA: any = await sendMsgAndHoldForResponse(message);
 
@@ -297,7 +297,7 @@ const TestScreen = () => {
       setTestState((prev: any) => {
         return {...prev, MajorTest: ''};
       });
-      await new Promise(resolve => setTimeout(() => resolve(true), 2000));
+      await new Promise(resolve => setTimeout(() => resolve(true), 500));
       const test2Results = await lightTest();
       setTestState((prev: any) => {
         return {...prev, Test2: test2Results.P};
