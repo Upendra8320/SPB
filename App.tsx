@@ -5,15 +5,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {lazy} from 'react';
 import Header from './components/Layout/Header';
-// import ConfigScreen from './components/Pages/ConfigScreen';
-// import LogScreen from './components/Pages/LogScreen';
-// import TestScreen from './components/Pages/TestScreen';
 import HomeScreen from './components/Pages/HomeScreen';
 
 // const Home = lazy(() => import('./components/Pages/HomeScreen'));
 const Test = lazy(() => import('./components/Pages/TestScreen'));
 const Config = lazy(() => import('./components/Pages/ConfigScreen'));
 const Log = lazy(() => import('./components/Pages/LogScreen'));
+const EquipmentTest = lazy(() => import('./components/Pages/EquipmentTest'));
+const Scanner = lazy(() => import('./components/Pages/Scanner'));
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +28,7 @@ function App(): React.JSX.Element {
         />
         <Stack.Screen
           name="Test"
-          component={Test}
+          component={EquipmentTest}
           options={{
             headerTitle: () => <Header />,
           }}
@@ -45,6 +44,14 @@ function App(): React.JSX.Element {
         <Stack.Screen
           name="Config"
           component={Config}
+          options={{
+            headerTitle: () => <Header />,
+            headerLeft: () => null,
+          }}
+        />
+        <Stack.Screen
+          name="Scanner"
+          component={Scanner}
           options={{
             headerTitle: () => <Header />,
             headerLeft: () => null,

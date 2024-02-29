@@ -41,6 +41,13 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
         onPress={() => navigation.navigate('Config')}>
         <Text style={styles.text}>Settings</Text>
       </Button>
+      <Button
+        style={{width: '70%', borderRadius: 8}}
+        buttonColor="#111b69"
+        mode="contained"
+        onPress={() => navigation.navigate('Scanner')}>
+        <Text style={styles.text}>Scanner</Text>
+      </Button>
       <View style={styles.imageView}>
         <Image source={require('../../assets/logo.png')} style={styles.image} />
       </View>
