@@ -311,7 +311,7 @@ const TestScreen = () => {
       };
       // await saveTestLogs({Test1: test1Results});
       await saveTestLogs(combinedResults);
-      ToastAndroid.show('Test Completed successfully', ToastAndroid.SHORT);
+      // ToastAndroid.show('Test Completed successfully', ToastAndroid.SHORT);
       // setAutoMatedTestRes(combinedResults);
     } catch (e) {
       ToastAndroid.show('test failed', ToastAndroid.SHORT);
@@ -414,19 +414,19 @@ const TestScreen = () => {
     const socket = new WebSocket('ws://192.168.4.1:80/ws');
     // const socket = new WebSocket('ws://192.168.10.19:8080');
     socket.onopen = () => {
-      ToastAndroid.show('Connection Successful', ToastAndroid.LONG);
+      // ToastAndroid.show('Connection Successful', ToastAndroid.LONG);
       setSocketConnected(true);
     };
     socket.onerror = (e: any) => {
-      ToastAndroid.show(
-        `Connection Failed ${e.type} ${e.message}`,
-        ToastAndroid.LONG,
-      );
+      // ToastAndroid.show(
+      //   `Connection Failed ${e.type} ${e.message}`,
+      //   ToastAndroid.SHORT,
+      // );
 
       setSocketConnected(false);
     };
     socket.onclose = (e: any) => {
-      ToastAndroid.show('Connection Closed', ToastAndroid.SHORT);
+      // ToastAndroid.show('Connection Closed', ToastAndroid.SHORT);
       setSocketConnected(false);
     };
     setSocket(socket);
