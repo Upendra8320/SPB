@@ -53,7 +53,7 @@ const TestScreen = () => {
   const [config, setConfig] = useState({motorValue: '', engineValue: ''});
 
   // toaster function
-  const Toaster = (msg: any) => ToastAndroid.show(msg, ToastAndroid.SHORT);
+  // const Toaster = (msg: any) => ToastAndroid.show(msg, ToastAndroid.SHORT);
 
   //fireman pump test
   const MotorTest = async () => {
@@ -64,14 +64,14 @@ const TestScreen = () => {
     });
 
     sendMsgAndHoldForResponse(`E,${config.motorValue}`);
-    await new Promise(resolve => setTimeout(() => resolve(true), 500));
+    await new Promise(resolve => setTimeout(() => resolve(true), 100));
     sendMsgAndHoldForResponse(`Q,${config.engineValue}`);
-    await new Promise(resolve => setTimeout(() => resolve(true), 500));
+    await new Promise(resolve => setTimeout(() => resolve(true), 100));
     const message: any = 'A';
     const resA: any = await sendMsgAndHoldForResponse(message);
 
     let splitRes = resA.split(',')[1];
-    Toaster(`Rx A ${splitRes[1]}`);
+    // Toaster(`Rx A ${splitRes[1]}`);
 
     if (splitRes.charCodeAt(0) !== '9'.charCodeAt(0)) {
       let commands = ['B', 'C', 'D'];
@@ -82,7 +82,7 @@ const TestScreen = () => {
         do {
           response = await sendMsgAndHoldForResponse(command);
           const split = response.split(',');
-          Toaster(`Rx: ${response}`);
+          // Toaster(`Rx: ${response}`);
           res = split[1];
           if (command === 'B' && res === '0') {
             setIsModalVisible({...isModalVisible, model1: true});
@@ -148,7 +148,7 @@ const TestScreen = () => {
     });
     const resM: any = await sendMsgAndHoldForResponse('M');
     let splitRes = resM.split(',')[1];
-    Toaster(`Rx M ${splitRes[1]}`);
+    // Toaster(`Rx M ${splitRes[1]}`);
     if (splitRes.charCodeAt(0) !== '9'.charCodeAt(0)) {
       let commands = ['N', 'O', 'P'];
 
@@ -159,7 +159,7 @@ const TestScreen = () => {
           // setLoader({ [command]: true });
           response = await sendMsgAndHoldForResponse(command);
           const split = response.split(',');
-          Toaster(`Rx: ${response}`);
+          // Toaster(`Rx: ${response}`);
           res = split[1];
           if (command === 'N' && res == '0') {
             setIsModalVisible({...isModalVisible, model1: true});
@@ -262,7 +262,7 @@ const TestScreen = () => {
       setStatus((prev: any) => {
         return {...prev, [command]: 1};
       });
-      Toaster(`Tx: ${command}`);
+      // Toaster(`Tx: ${command}`);
       // await new Promise(resolve => setTimeout(resolve, 1000));
 
       socket.send(command);
@@ -297,7 +297,7 @@ const TestScreen = () => {
       setTestState((prev: any) => {
         return {...prev, MajorTest: ''};
       });
-      await new Promise(resolve => setTimeout(() => resolve(true), 500));
+      await new Promise(resolve => setTimeout(() => resolve(true), 100));
       const test2Results = await lightTest();
       setTestState((prev: any) => {
         return {...prev, Test2: test2Results.P};
@@ -320,7 +320,7 @@ const TestScreen = () => {
 
   const handleFinalTest = async (e: any) => {
     ToastAndroid.show('Test Completed', ToastAndroid.SHORT);
-    navigation.navigate("Log" as never);
+    navigation.navigate("Home" as never);
     // e.preventDefault();
     // const Test3Res = {
     //   T1: RadioButtonValue.gps,
@@ -411,8 +411,8 @@ const TestScreen = () => {
   };
 
   useEffect(() => {
-    const socket = new WebSocket('ws://192.168.4.1:80/ws');
-    // const socket = new WebSocket('ws://192.168.10.19:8080');
+    // const socket = new WebSocket('ws://192.168.4.1:80/ws');
+    const socket = new WebSocket('ws://192.168.10.19:8080');
     socket.onopen = () => {
       ToastAndroid.show('Connection Successful', ToastAndroid.LONG);
       setSocketConnected(true);
