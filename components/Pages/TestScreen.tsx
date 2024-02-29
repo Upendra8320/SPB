@@ -286,7 +286,7 @@ const TestScreen = () => {
   //main function
   const mainFunction = async () => {
     try {
-      ToastAndroid.show('Test Started', ToastAndroid.SHORT);
+      // ToastAndroid.show('Test Started', ToastAndroid.SHORT);
       setTestState((prev: any) => {
         return {...prev, TestStart: true};
       });
