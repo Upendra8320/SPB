@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
-import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, Text, ToastAndroid, View } from 'react-native';
-import { Avatar, Button, RadioButton } from 'react-native-paper';
-import { Styles } from '../../Styles/Styles';
+import {useNavigation} from '@react-navigation/native';
+import React, {useContext, useEffect, useState} from 'react';
+import {ScrollView, Text, ToastAndroid, View} from 'react-native';
+import {Avatar, Button, RadioButton} from 'react-native-paper';
+import {Styles} from '../../Styles/Styles';
 import ConfirmationModal from '../Utils/ConfirmationModel';
-import { ConnectionStatusContext } from '../Utils/ConnectionStatusContext';
+import {ConnectionStatusContext} from '../Utils/ConnectionStatusContext';
 
 const TestScreen = () => {
   const navigation = useNavigation();
@@ -14,7 +14,7 @@ const TestScreen = () => {
   const [RadioButtonValue, setRadioButonValue] = useState({
     gps: '',
     lights: '',
-  }); 
+  });
   const [response, setResponse] = useState<any>({});
   const [loader, setLoader] = useState<any>({});
   const [TestState, setTestState] = useState<any>({
@@ -44,16 +44,9 @@ const TestScreen = () => {
     handleAbandon: () => {},
     Continue: () => {},
   });
-
-  // const [abandoned, setAbandoned] = useState(false);
-
-  // const [errorMessage, setErrorMessage] = useState("");
-
-  const [autoMatedTestRes, setAutoMatedTestRes] = useState<any>({});
   const [config, setConfig] = useState({motorValue: '', engineValue: ''});
-
-  // toaster function
-  // const Toaster = (msg: any) => ToastAndroid.show(msg, ToastAndroid.SHORT);
+  const [DebugLogs, setDebugLogs] = useState<any>([]);
+  
 
   //fireman pump test
   const MotorTest = async () => {
@@ -320,7 +313,7 @@ const TestScreen = () => {
 
   const handleFinalTest = async (e: any) => {
     ToastAndroid.show('Test Completed', ToastAndroid.SHORT);
-    navigation.navigate("Home" as never);
+    navigation.navigate('Home' as never);
     // e.preventDefault();
     // const Test3Res = {
     //   T1: RadioButtonValue.gps,
@@ -368,7 +361,7 @@ const TestScreen = () => {
     const year = date.getFullYear();
     const hours = pad(date.getHours());
     const minutes = pad(date.getMinutes());
-    const seconds = pad(date.getSeconds());
+    const seconds = pad(date.getSeconds()); 
 
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   };
@@ -415,6 +408,9 @@ const TestScreen = () => {
     // const socket = new WebSocket('ws://192.168.10.19:8080');
     socket.onopen = () => {
       // ToastAndroid.show('Connection Successful', ToastAndroid.LONG);
+      setDebugLogs((prev: any) => {
+        return [...prev, {Connection:'Connection Successful'}];
+      });
       setSocketConnected(true);
     };
     socket.onerror = (e: any) => {
@@ -438,6 +434,7 @@ const TestScreen = () => {
   }, []);
 
   useEffect(() => {
+  
     const loadConfig = async () => {
       const loadedConfig = await getConfigLogs();
       setConfig(loadedConfig);
@@ -699,8 +696,8 @@ const TestScreen = () => {
               </Text>
             </View>
           </View>
-          <View style={Styles.manualConatiner}>
-            <Text style={Styles.subSectionText}>Gps On</Text>
+          <View style={Styles.manualContainer}>
+            <Text style={Styles.subSectionText}>GPS System</Text>
             <RadioButton.Group
               onValueChange={(value: any) =>
                 setRadioButonValue(prev => {
@@ -710,14 +707,14 @@ const TestScreen = () => {
               value={RadioButtonValue.gps}>
               <View style={Styles.manualButtons}>
                 <RadioButton value="1" />
-                <Text>Yes</Text>
+                <Text style={{color:"#4e4e50"}}>OPS</Text>
                 <RadioButton value="0" />
-                <Text>No</Text>
+                <Text style={{color:"#4e4e50"}}>Non-OPS</Text>
               </View>
             </RadioButton.Group>
           </View>
-          <View style={Styles.manualConatiner}>
-            <Text style={Styles.subSectionText}>Lights On</Text>
+          <View style={Styles.manualContainer}>
+            <Text style={Styles.subSectionText}>Walkie-talkie</Text>
             <RadioButton.Group
               onValueChange={(value: any) =>
                 setRadioButonValue(prev => {
@@ -727,9 +724,9 @@ const TestScreen = () => {
               value={RadioButtonValue.lights}>
               <View style={Styles.manualButtons}>
                 <RadioButton value="1" />
-                <Text>Yes</Text>
+                <Text style={{color:"#4e4e50"}}>OPS</Text>
                 <RadioButton value="0" />
-                <Text>No</Text>
+                <Text style={{color:"#4e4e50"}}>Non-OPS</Text>
               </View>
             </RadioButton.Group>
           </View>

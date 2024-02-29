@@ -112,8 +112,8 @@ const TestDetails = ({
   };
 
   const results: any = {
-    1: 'Success',
-    0: 'Failed',
+    1: 'OPS',
+    0: 'Non-OPS',
   };
 
   const testNames: any = {

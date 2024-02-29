@@ -60,7 +60,7 @@ export const Styles = StyleSheet.create({
     color: "#4e4e50",
     fontWeight: "500",
   },
-  manualConatiner: {
+  manualContainer: {
     marginLeft: 25,
     marginRight: 25,
     marginTop:10,

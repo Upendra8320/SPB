@@ -41,6 +41,13 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
         onPress={() => navigation.navigate('Config')}>
         <Text style={styles.text}>Settings</Text>
       </Button>
+      <Button
+        style={{width: '70%', borderRadius: 8}}
+        buttonColor="#111b69"
+        mode="contained"
+        onPress={() => navigation.navigate('Diagnostic')}>
+        <Text style={styles.text}>Diagnostic</Text>
+      </Button>
       <View style={styles.imageView}>
         <Image source={require('../../assets/HomeScreenLogo.png')} style={styles.image} />
       </View>
@@ -64,9 +71,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   imageView: {
-    // borderWidth:1,
     display: 'flex',
-    // justifyContent: "center",
     alignItems: 'center',
     width: '60%',
     height: '20%',
