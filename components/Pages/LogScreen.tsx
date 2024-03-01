@@ -29,8 +29,9 @@ const LogScreen = () => {
   useEffect(() => {
     const loadLogs = async () => {
       const loadedLogs = await getTestLogs();
+      const reversedLogs = loadedLogs.reverse();
 
-      setTestLogs(loadedLogs); // Assuming you have a state called testLogs
+      setTestLogs(reversedLogs); // Assuming you have a state called testLogs
     };
 
     loadLogs();

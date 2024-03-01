@@ -11,7 +11,7 @@ const TestScreen = () => {
   const navigation = useNavigation();
   const {setSocketConnected} = useContext(ConnectionStatusContext);
   const [socket, setSocket] = useState<any>({});
-  const [RadioButtonValue, setRadioButonValue] = useState({
+  const [RadioButtonValue, setRadioButtonValue] = useState({
     gps: '',
     lights: '',
   });
@@ -46,7 +46,6 @@ const TestScreen = () => {
   });
   const [config, setConfig] = useState({motorValue: '', engineValue: ''});
   const [DebugLogs, setDebugLogs] = useState<any>([]);
-  
 
   //fireman pump test
   const MotorTest = async () => {
@@ -361,7 +360,7 @@ const TestScreen = () => {
     const year = date.getFullYear();
     const hours = pad(date.getHours());
     const minutes = pad(date.getMinutes());
-    const seconds = pad(date.getSeconds()); 
+    const seconds = pad(date.getSeconds());
 
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   };
@@ -404,12 +403,12 @@ const TestScreen = () => {
   };
 
   useEffect(() => {
-    const socket = new WebSocket('ws://192.168.4.1:80/ws');
-    // const socket = new WebSocket('ws://192.168.10.19:8080');
+    // const socket = new WebSocket('ws://192.168.4.1:80/ws');
+    const socket = new WebSocket('ws://192.168.10.19:8080');
     socket.onopen = () => {
       // ToastAndroid.show('Connection Successful', ToastAndroid.LONG);
       setDebugLogs((prev: any) => {
-        return [...prev, {Connection:'Connection Successful'}];
+        return [...prev, {Connection: 'Connection Successful'}];
       });
       setSocketConnected(true);
     };
@@ -434,7 +433,6 @@ const TestScreen = () => {
   }, []);
 
   useEffect(() => {
-  
     const loadConfig = async () => {
       const loadedConfig = await getConfigLogs();
       setConfig(loadedConfig);
@@ -669,7 +667,7 @@ const TestScreen = () => {
             </View>
           </View>
         </View>
-        {/* mannual test */}
+        {/* manual test */}
         <View>
           <View style={Styles.header}>
             <Text style={Styles.headerText}>Manual Test</Text>
@@ -700,16 +698,16 @@ const TestScreen = () => {
             <Text style={Styles.subSectionText}>GPS System</Text>
             <RadioButton.Group
               onValueChange={(value: any) =>
-                setRadioButonValue(prev => {
+                setRadioButtonValue(prev => {
                   return {...prev, gps: value};
                 })
               }
               value={RadioButtonValue.gps}>
               <View style={Styles.manualButtons}>
                 <RadioButton value="1" />
-                <Text style={{color:"#4e4e50"}}>OPS</Text>
+                <Text style={{color: '#4e4e50'}}>OPS</Text>
                 <RadioButton value="0" />
-                <Text style={{color:"#4e4e50"}}>Non-OPS</Text>
+                <Text style={{color: '#4e4e50'}}>Non-OPS</Text>
               </View>
             </RadioButton.Group>
           </View>
@@ -717,16 +715,16 @@ const TestScreen = () => {
             <Text style={Styles.subSectionText}>Walkie-talkie</Text>
             <RadioButton.Group
               onValueChange={(value: any) =>
-                setRadioButonValue(prev => {
+                setRadioButtonValue(prev => {
                   return {...prev, lights: value};
                 })
               }
               value={RadioButtonValue.lights}>
               <View style={Styles.manualButtons}>
                 <RadioButton value="1" />
-                <Text style={{color:"#4e4e50"}}>OPS</Text>
+                <Text style={{color: '#4e4e50'}}>OPS</Text>
                 <RadioButton value="0" />
-                <Text style={{color:"#4e4e50"}}>Non-OPS</Text>
+                <Text style={{color: '#4e4e50'}}>Non-OPS</Text>
               </View>
             </RadioButton.Group>
           </View>
