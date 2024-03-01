@@ -32,6 +32,7 @@ const LogScreen = () => {
       const reversedLogs = loadedLogs.reverse();
 
       setTestLogs(reversedLogs); // Assuming you have a state called testLogs
+      
     };
 
     loadLogs();

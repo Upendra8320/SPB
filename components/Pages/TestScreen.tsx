@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
-import React, {useContext, useEffect, useState} from 'react';
-import {ScrollView, Text, ToastAndroid, View} from 'react-native';
-import {Avatar, Button, RadioButton} from 'react-native-paper';
-import {Styles} from '../../Styles/Styles';
+import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useEffect, useState } from 'react';
+import { ScrollView, Text, ToastAndroid, View } from 'react-native';
+import { Avatar, Button, RadioButton } from 'react-native-paper';
+import { Styles } from '../../Styles/Styles';
 import ConfirmationModal from '../Utils/ConfirmationModel';
-import {ConnectionStatusContext} from '../Utils/ConnectionStatusContext';
+import { ConnectionStatusContext } from '../Utils/ConnectionStatusContext';
 
 const TestScreen = () => {
   const navigation = useNavigation();
@@ -45,7 +45,6 @@ const TestScreen = () => {
     Continue: () => {},
   });
   const [config, setConfig] = useState({motorValue: '', engineValue: ''});
-  const [DebugLogs, setDebugLogs] = useState<any>([]);
 
   //fireman pump test
   const MotorTest = async () => {
@@ -140,7 +139,6 @@ const TestScreen = () => {
     });
     const resM: any = await sendMsgAndHoldForResponse('M');
     let splitRes = resM.split(',')[1];
-    // Toaster(`Rx M ${splitRes[1]}`);
     if (splitRes.charCodeAt(0) !== '9'.charCodeAt(0)) {
       let commands = ['N', 'O', 'P'];
 
@@ -148,10 +146,8 @@ const TestScreen = () => {
         let response: any = '';
         let res: any = '';
         do {
-          // setLoader({ [command]: true });
           response = await sendMsgAndHoldForResponse(command);
           const split = response.split(',');
-          // Toaster(`Rx: ${response}`);
           res = split[1];
           if (command === 'N' && res == '0') {
             setIsModalVisible({...isModalVisible, model1: true});
@@ -254,9 +250,6 @@ const TestScreen = () => {
       setStatus((prev: any) => {
         return {...prev, [command]: 1};
       });
-      // Toaster(`Tx: ${command}`);
-      // await new Promise(resolve => setTimeout(resolve, 1000));
-
       socket.send(command);
 
       const onMessage = (e: any) => {
@@ -278,7 +271,6 @@ const TestScreen = () => {
   //main function
   const mainFunction = async () => {
     try {
-      // ToastAndroid.show('Test Started', ToastAndroid.SHORT);
       setTestState((prev: any) => {
         return {...prev, TestStart: true};
       });
@@ -303,7 +295,6 @@ const TestScreen = () => {
       };
       // await saveTestLogs({Test1: test1Results});
       await saveTestLogs(combinedResults);
-      // ToastAndroid.show('Test Completed successfully', ToastAndroid.SHORT);
       // setAutoMatedTestRes(combinedResults);
     } catch (e) {
       ToastAndroid.show('test failed', ToastAndroid.SHORT);
@@ -348,7 +339,7 @@ const TestScreen = () => {
   };
 
   const generateRandomId = () => {
-    const number = Math.floor(Math.random() * 10000000); // Generates a number up to 9999999
+    const number = Math.floor(Math.random() * 10000000);
     return String(number).padStart(7, '0'); // Pads with leading zeros if less than 7 digits
   };
 
@@ -374,26 +365,39 @@ const TestScreen = () => {
   };
 
   const saveTestLogs = async (combinedResults: any) => {
-    const uniqueId = generateRandomId();
-    const newLog = {
-      Test: combinedResults,
-      timestamp: formatDate(new Date()),
-      overAllResult: calculateOverALLResult(combinedResults),
-      id: uniqueId,
-    };
-
     try {
+      // Fetch the existing logs from AsyncStorage
       const existingLogsJson = await AsyncStorage.getItem('@test_logs');
-      let existingLogs =
-        existingLogsJson != null ? JSON.parse(existingLogsJson) : [];
+      let existingLogs = existingLogsJson != null ? JSON.parse(existingLogsJson) : [];
+      
+      // Ensure existingLogs is an array
       if (!Array.isArray(existingLogs)) {
-        existingLogs = []; // Ensure existingLogs is always an array
+        existingLogs = [];
       }
+      // Calculate the new ID by finding the maximum existing ID and adding 1
+      let newId = 1; 
+      if (existingLogs.length > 0) {
+        const maxId = existingLogs.reduce((max:any, log:any) => Math.max(max, parseInt(log.id, 10)), 0);
+        newId = maxId + 1; 
+      }
+  
+      const newLog = {
+        Test: combinedResults,
+        timestamp: formatDate(new Date()),
+        overAllResult: calculateOverALLResult(combinedResults), 
+        id: newId, 
+      };
+  
+      // Append the new log to the existing logs array
       existingLogs.push(newLog);
-      const jsonValue = JSON.stringify(existingLogs);
-      await AsyncStorage.setItem('@test_logs', jsonValue);
-    } catch (e) {}
+  
+      // Save the updated logs array back to AsyncStorage
+      await AsyncStorage.setItem('@test_logs', JSON.stringify(existingLogs));
+    } catch (e) {
+      ToastAndroid.show(`Error saving ${e}`, ToastAndroid.SHORT);
+    }
   };
+  
 
   const getConfigLogs = async () => {
     try {
@@ -406,22 +410,12 @@ const TestScreen = () => {
     // const socket = new WebSocket('ws://192.168.4.1:80/ws');
     const socket = new WebSocket('ws://192.168.10.19:8080');
     socket.onopen = () => {
-      // ToastAndroid.show('Connection Successful', ToastAndroid.LONG);
-      setDebugLogs((prev: any) => {
-        return [...prev, {Connection: 'Connection Successful'}];
-      });
       setSocketConnected(true);
     };
     socket.onerror = (e: any) => {
-      // ToastAndroid.show(
-      //   `Connection Failed ${e.type} ${e.message}`,
-      //   ToastAndroid.SHORT,
-      // );
-
       setSocketConnected(false);
     };
     socket.onclose = (e: any) => {
-      // ToastAndroid.show('Connection Closed', ToastAndroid.SHORT);
       setSocketConnected(false);
     };
     setSocket(socket);
