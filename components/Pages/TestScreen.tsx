@@ -13,7 +13,7 @@ const TestScreen = () => {
   const [socket, setSocket] = useState<any>({});
   const [RadioButtonValue, setRadioButtonValue] = useState({
     gps: '',
-    lights: '',
+    walkieTalkie: '',
   });
   const [response, setResponse] = useState<any>({});
   const [loader, setLoader] = useState<any>({});
@@ -44,6 +44,7 @@ const TestScreen = () => {
     handleAbandon: () => {},
     Continue: () => {},
   });
+  const [autoMatedTestRes, setAutoMatedTestRes] = useState<any>({});
   const [config, setConfig] = useState({motorValue: '', engineValue: ''});
 
   //fireman pump test
@@ -287,61 +288,57 @@ const TestScreen = () => {
         return {...prev, Test2: test2Results.P};
       });
       setTestState((prev: any) => {
-        return {...prev, MajorTest: ''};
+        return {...prev, MajorTest: 'Test3'};
       });
       const combinedResults = {
         Test1: test1Results,
         Test2: test2Results,
       };
       // await saveTestLogs({Test1: test1Results});
-      await saveTestLogs(combinedResults);
-      // setAutoMatedTestRes(combinedResults);
+      // await saveTestLogs(combinedResults);
+      setAutoMatedTestRes(combinedResults);
     } catch (e) {
       ToastAndroid.show('test failed', ToastAndroid.SHORT);
     }
   };
 
   const handleFinalTest = async (e: any) => {
+    e.preventDefault();
+    const Test3Res = {
+      T1: RadioButtonValue.gps,
+      T2: RadioButtonValue.walkieTalkie,
+    };
+
+    let localRes = {
+      ...TestState,
+    };
+    
+    if (RadioButtonValue.gps === "1" && RadioButtonValue.walkieTalkie === "1") {
+      setTestState({ ...TestState, Test3: "1" });
+      localRes = { ...localRes, Test3: "1" };
+    } else {
+      setTestState({ ...TestState, Test3: "0" });
+      localRes = { ...localRes, Test3: "0" };
+    }
+    setTestState((prev: any) => {
+      return { ...prev, TestStart: false };
+    });
+    
+    console.log('localRes: ', localRes);
+    await saveTestLogs(
+      { ...autoMatedTestRes, Test3: { ...Test3Res } },
+      localRes
+    );
+    setTestState((prev: any) => {
+      return { ...prev, FinalResultSubmitBtn: true };
+    });
+    setTestState((prev: any) => {
+      return { ...prev, MajorTest: "" };
+    });
     ToastAndroid.show('Test Completed', ToastAndroid.SHORT);
     navigation.navigate('Home' as never);
-    // e.preventDefault();
-    // const Test3Res = {
-    //   T1: RadioButtonValue.gps,
-    //   T2: RadioButtonValue.lights,
-    // };
-
-    // let localRes = {
-    //   ...TestState,
-    // };
-
-    // if (RadioButtonValue.gps === "1" && RadioButtonValue.lights === "1") {
-    //   setTestState({ ...TestState, Test3: "1" });
-    //   localRes = { ...localRes, Test3: "1" };
-    // } else {
-    //   setTestState({ ...TestState, Test3: "0" });
-    //   localRes = { ...localRes, Test3: "0" };
-    // }
-    // setTestState((prev: any) => {
-    //   return { ...prev, TestStart: false };
-    // });
-    // // await saveTestLogs(
-    // //   { ...autoMatedTestRes, Test3: { ...Test3Res } },
-    // //   localRes
-    // // );
-    // ToastAndroid.show("Test Completed", ToastAndroid.SHORT);
-    // ToastAndroid.show("Check Result In Log", ToastAndroid.SHORT);
-    // setTestState((prev: any) => {
-    //   return { ...prev, FinalResultSubmitBtn: true };
-    // });
-    // setTestState((prev: any) => {
-    //   return { ...prev, MajorTest: "" };
-    // });
   };
 
-  const generateRandomId = () => {
-    const number = Math.floor(Math.random() * 10000000);
-    return String(number).padStart(7, '0'); // Pads with leading zeros if less than 7 digits
-  };
 
   const formatDate = (date: any) => {
     const pad = (num: any) => (num < 10 ? `0${num}` : num);
@@ -357,14 +354,15 @@ const TestScreen = () => {
   };
 
   const calculateOverALLResult = (TestState: any) => {
-    if (TestState.Test1.D === '1' && TestState.Test2.P !== '0') {
+    if (TestState.Test1 === '1' && TestState.Test2 !== '0' && TestState.Test3 === '1') {
       return true;
     } else {
       return false;
     }
   };
 
-  const saveTestLogs = async (combinedResults: any) => {
+  const saveTestLogs = async (combinedResults: any, localRes:any) => {
+    console.log(localRes, 'localRessaveTestLogs')
     try {
       // Fetch the existing logs from AsyncStorage
       const existingLogsJson = await AsyncStorage.getItem('@test_logs');
@@ -384,13 +382,13 @@ const TestScreen = () => {
       const newLog = {
         Test: combinedResults,
         timestamp: formatDate(new Date()),
-        overAllResult: calculateOverALLResult(combinedResults), 
+        overAllResult: await calculateOverALLResult(localRes), 
         id: newId, 
       };
   
       // Append the new log to the existing logs array
       existingLogs.push(newLog);
-  
+      console.log("this is executed at lst")
       // Save the updated logs array back to AsyncStorage
       await AsyncStorage.setItem('@test_logs', JSON.stringify(existingLogs));
     } catch (e) {
@@ -710,10 +708,10 @@ const TestScreen = () => {
             <RadioButton.Group
               onValueChange={(value: any) =>
                 setRadioButtonValue(prev => {
-                  return {...prev, lights: value};
+                  return {...prev, walkieTalkie: value};
                 })
               }
-              value={RadioButtonValue.lights}>
+              value={RadioButtonValue.walkieTalkie}>
               <View style={Styles.manualButtons}>
                 <RadioButton value="1" />
                 <Text style={{color: '#4e4e50'}}>OPS</Text>
@@ -730,7 +728,7 @@ const TestScreen = () => {
               mode="contained"
               disabled={TestState.FinalResultSubmitBtn === true ? true : false}
               onPress={e => {
-                if (RadioButtonValue.gps && RadioButtonValue.lights) {
+                if (RadioButtonValue.gps && RadioButtonValue.walkieTalkie) {
                   handleFinalTest(e);
                 }
               }}>

@@ -21,7 +21,7 @@ const LogScreen = () => {
       let existingLogs =
         existingLogsJson != null ? JSON.parse(existingLogsJson) : [];
       const updatedLogs = existingLogs.filter((log: any) => log.id !== logId); // Remove the log with the given ID
-      const jsonValue = JSON.stringify(updatedLogs);
+      const jsonValue = JSON.stringify(updatedLogs.reverse());
       await AsyncStorage.setItem('@test_logs', jsonValue);
       setTestLogs(updatedLogs); // Update state to reflect the deletion
     } catch (e) {}
@@ -30,7 +30,7 @@ const LogScreen = () => {
     const loadLogs = async () => {
       const loadedLogs = await getTestLogs();
       const reversedLogs = loadedLogs.reverse();
-
+      console.log('reversedLogs: ', reversedLogs);
       setTestLogs(reversedLogs); // Assuming you have a state called testLogs
       
     };
@@ -109,8 +109,8 @@ const TestDetails = ({
     N: 'Switch Status',
     O: 'Measured Current',
     P: 'Final status',
-    T1: 'Manual Test1',
-    T2: 'Manual Test2',
+    T1: 'GPS',
+    T2: 'Walkie-Talkie',
   };
 
   const results: any = {
