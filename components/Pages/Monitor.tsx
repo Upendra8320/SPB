@@ -1,16 +1,14 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useContext, useEffect, useRef, useState} from 'react';
-import {ScrollView, StyleSheet, Text, ToastAndroid, View} from 'react-native';
-import {ConnectionStatusContext} from '../Utils/ConnectionStatusContext';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { ScrollView, StyleSheet, Text, ToastAndroid, View } from 'react-native';
+import { ConnectionStatusContext } from '../Utils/ConnectionStatusContext';
 
 const TestScreen = () => {
-  const navigation = useNavigation();
   const {setSocketConnected} = useContext(ConnectionStatusContext);
   const [socket, setSocket] = useState<any>({});
   const [data, setData] = useState<any>([]);
   const scrollViewRef = useRef<ScrollView>(null);
 
-  //   console.log(data);
+  //
   const terminology: any = {
     B: 'fireman_pump_Switch_Status',
     C: 'fireman_pump_current',
@@ -23,17 +21,15 @@ const TestScreen = () => {
   };
 
   useEffect(() => {
-    const socket = new WebSocket('ws://192.168.4.1:80/ws');
-    // const socket = new WebSocket('ws://192.168.10.19:8080');
+    const socket = new WebSocket(process.env.WEB_SOCKET!);
+
     const onMessage = (e: any) => {
-      console.log(e.data);
-    //   setData((prev: any) => prev.concat(e.data));
-    setData((prev: any) => [...prev, e.data]);
-      scrollViewRef.current?.scrollToEnd({ animated: true });
+      //   setData((prev: any) => prev.concat(e.data));
+      setData((prev: any) => [...prev, e.data]);
+      scrollViewRef.current?.scrollToEnd({animated: true});
     };
 
     socket.onopen = () => {
-      console.log('connection successful');
       setSocketConnected(true);
       socket.send('R');
     };
@@ -78,14 +74,16 @@ const TestScreen = () => {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView
-       ref={scrollViewRef} // Attach the ref to the ScrollView
-       style={{ flex: 1 }}>
+        ref={scrollViewRef} // Attach the ref to the ScrollView
+        style={{flex: 1}}>
         <View style={{margin: 15}}>
           <Text style={{color: '#3f3f3f', fontSize: 18, fontWeight: '700'}}>
             Device Diagnostic
           </Text>
         </View>
-        <View>{data.map((list: any, index:number) => renderItem(list, index))}</View>
+        <View>
+          {data.map((list: any, index: number) => renderItem(list, index))}
+        </View>
       </ScrollView>
     </View>
   );

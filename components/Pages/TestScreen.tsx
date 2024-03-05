@@ -7,6 +7,7 @@ import { Styles } from '../../Styles/Styles';
 import ConfirmationModal from '../Utils/ConfirmationModel';
 import { ConnectionStatusContext } from '../Utils/ConnectionStatusContext';
 
+
 const TestScreen = () => {
   const navigation = useNavigation();
   const {setSocketConnected} = useContext(ConnectionStatusContext);
@@ -93,7 +94,11 @@ const TestScreen = () => {
                 });
                 throw new Error();
               } else if (stop === 'no') {
-                break;
+                return test1Result={
+                  B: '0',
+                  C: '0',
+                  D: '0',
+                }
               }
             }
           } else if (command === 'B' && res === '9') {
@@ -164,7 +169,11 @@ const TestScreen = () => {
                 // setAbandoned(true);
                 throw new Error();
               } else if (stop === 'no') {
-                break;
+                return test2Result={
+                  N: '0',
+                  O: '0',
+                  P: '0',
+                }
               }
             }
           } else if (command === 'N' && res === '9') {
@@ -298,6 +307,11 @@ const TestScreen = () => {
       // await saveTestLogs(combinedResults);
       setAutoMatedTestRes(combinedResults);
     } catch (e) {
+      const combinedResults = {
+        Test1: {B: '0', C: '0', D: '0'},
+        Test2: {N: '0', O: '0', P: '0'},
+      };
+      setAutoMatedTestRes(combinedResults);
       ToastAndroid.show('test failed', ToastAndroid.SHORT);
     }
   };
@@ -324,7 +338,7 @@ const TestScreen = () => {
       return { ...prev, TestStart: false };
     });
     
-    console.log('localRes: ', localRes);
+    
     await saveTestLogs(
       { ...autoMatedTestRes, Test3: { ...Test3Res } },
       localRes
@@ -362,7 +376,7 @@ const TestScreen = () => {
   };
 
   const saveTestLogs = async (combinedResults: any, localRes:any) => {
-    console.log(localRes, 'localRessaveTestLogs')
+    
     try {
       // Fetch the existing logs from AsyncStorage
       const existingLogsJson = await AsyncStorage.getItem('@test_logs');
@@ -388,7 +402,7 @@ const TestScreen = () => {
   
       // Append the new log to the existing logs array
       existingLogs.push(newLog);
-      console.log("this is executed at lst")
+      
       // Save the updated logs array back to AsyncStorage
       await AsyncStorage.setItem('@test_logs', JSON.stringify(existingLogs));
     } catch (e) {
@@ -405,8 +419,7 @@ const TestScreen = () => {
   };
 
   useEffect(() => {
-    const socket = new WebSocket('ws://192.168.4.1:80/ws');
-    // const socket = new WebSocket('ws://192.168.10.19:8080');
+    const socket = new WebSocket(process.env.WEB_SOCKET!);
     socket.onopen = () => {
       setSocketConnected(true);
     };
@@ -686,6 +699,10 @@ const TestScreen = () => {
               </Text>
             </View>
           </View>
+          <View style={Styles.RadioLabelContainer}>
+          <Text style={{color: '#4e4e50'}}>OPS</Text>
+          <Text style={{color: '#4e4e50'}}>Non-OPS</Text>
+          </View>
           <View style={Styles.manualContainer}>
             <Text style={Styles.subSectionText}>GPS System</Text>
             <RadioButton.Group
@@ -697,9 +714,7 @@ const TestScreen = () => {
               value={RadioButtonValue.gps}>
               <View style={Styles.manualButtons}>
                 <RadioButton value="1" />
-                <Text style={{color: '#4e4e50'}}>OPS</Text>
                 <RadioButton value="0" />
-                <Text style={{color: '#4e4e50'}}>Non-OPS</Text>
               </View>
             </RadioButton.Group>
           </View>
@@ -714,9 +729,9 @@ const TestScreen = () => {
               value={RadioButtonValue.walkieTalkie}>
               <View style={Styles.manualButtons}>
                 <RadioButton value="1" />
-                <Text style={{color: '#4e4e50'}}>OPS</Text>
+                {/* <Text style={{color: '#4e4e50'}}>OPS</Text> */}
                 <RadioButton value="0" />
-                <Text style={{color: '#4e4e50'}}>Non-OPS</Text>
+                {/* <Text style={{color: '#4e4e50'}}>Non-OPS</Text> */}
               </View>
             </RadioButton.Group>
           </View>
@@ -748,7 +763,7 @@ const TestScreen = () => {
         />
         <ConfirmationModal
           Yes="Abundant Test"
-          No="Fail Test Case"
+          No="Fail Test"
           isVisible={isModalVisible.model2}
           question={modalQuestion}
           onYes={modalHandlers.handleAbandon}
