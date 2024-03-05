@@ -1,30 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, ToastAndroid } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Button, List, Avatar, TextInput } from "react-native-paper";
-import { Styles } from "../../Styles/Styles";
-
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, ScrollView, ToastAndroid} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Button, List, Avatar, TextInput} from 'react-native-paper';
+import {Styles} from '../../Styles/Styles';
+import { useNavigation } from '@react-navigation/native';
 const ConfigScreen = () => {
-    const [config, setConfig] = useState({ motorValue: '', engineValue: '' });
+  const navigation = useNavigation();
+  const [config, setConfig] = useState({motorValue: '', engineValue: ''});
 
   //get log
   const getConfigLogs = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem("@config_logs");
+      const jsonValue = await AsyncStorage.getItem('@config_logs');
       return jsonValue != null ? JSON.parse(jsonValue) : [];
-    } catch (e) {
-      
-    }
+    } catch (e) {}
   };
   const saveConfigLogs = async () => {
-    
     try {
       const jsonValue = JSON.stringify(config);
-      await AsyncStorage.setItem("@config_logs", jsonValue);
-      ToastAndroid.show("Successfull", ToastAndroid.SHORT)
+      await AsyncStorage.setItem('@config_logs', jsonValue);
+      ToastAndroid.show('Successful', ToastAndroid.SHORT);
+      navigation.navigate("Home" as never);
     } catch (e) {
-      
-      ToastAndroid.show("failed", ToastAndroid.SHORT)
+      ToastAndroid.show('failed', ToastAndroid.SHORT);
     }
   };
 
@@ -42,42 +40,48 @@ const ConfigScreen = () => {
     <ScrollView>
       <View>
         <View style={Styles.header}>
-          <Text style={Styles.headerText}>Set Values</Text>
+          <Text style={Styles.headerText}>Settings</Text>
         </View>
-        <View style={{ backgroundColor: "#f6f8fa" }}> 
+        <View style={{backgroundColor: '#f6f8fa'}}>
           <View style={styles.Input}>
             <View>
-              <Text style={styles.InputText}>Motor Value :</Text>
+              <Text style={styles.InputText}>Fireman Pump Min Current :</Text>
             </View>
             <View style={styles.InputBox}>
               <TextInput
                 placeholder="Enter Motor Value"
+                right={<TextInput.Affix text="Amp" />}
+                dense={true}
                 keyboardType="numeric"
                 value={config?.motorValue}
-                onChangeText={(text) =>
-                    setConfig((prev: any) => {
-                    return { ...prev, motorValue: text.trim() };
+                onChangeText={text =>
+                  setConfig((prev: any) => {
+                    return {...prev, motorValue: text.trim()};
                   })
                 }
-                style={{ backgroundColor: "white" }}
+                style={{backgroundColor: 'white'}}
               />
             </View>
           </View>
           <View style={styles.Input}>
             <View>
-              <Text style={styles.InputText}>Engine Value :</Text>
+              <Text style={styles.InputText}>
+                Navigation light min Current :
+              </Text>
             </View>
             <View style={styles.InputBox}>
               <TextInput
                 placeholder="Enter Engine Value"
                 keyboardType="numeric"
+                right={<TextInput.Affix text="Amp" />}
+                dense={true}
                 value={config?.engineValue}
-                onChangeText={(text) =>
-                    setConfig((prev: any) => {
-                    return { ...prev, engineValue: text.trim() };
+                onChangeText={text =>
+                  setConfig((prev: any) => {
+                    return {...prev, engineValue: text.trim()};
                   })
                 }
-                style={{ backgroundColor: "white" }}
+                style={{backgroundColor: 'white'}}
               />
             </View>
           </View>
@@ -87,9 +91,8 @@ const ConfigScreen = () => {
               uppercase={true}
               buttonColor="#2a2c93"
               mode="contained"
-              onPress={saveConfigLogs}
-            >
-              <Text>Submit</Text>
+              onPress={saveConfigLogs}>
+              <Text>Save</Text>
             </Button>
           </View>
         </View>
@@ -101,15 +104,15 @@ const ConfigScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     paddingLeft: 10,
     paddingTop: 10,
     paddingRight: 10,
     gap: 10,
   },
   Input: {
-    display: "flex",
-    justifyContent: "space-between",
+    display: 'flex',
+    justifyContent: 'space-between',
     gap: 5,
     marginTop: 10,
     marginLeft: 25,
@@ -119,13 +122,13 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     borderRadius: 10,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   InputText: {
     paddingLeft: 10,
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#4F4F4F",
+    fontWeight: 'bold',
+    color: '#4F4F4F',
     // borderWidth: 2,
   },
   InputBox: {

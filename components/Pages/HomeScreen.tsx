@@ -1,14 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useEffect} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {Button} from 'react-native-paper';
+import React, { useEffect } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { Button } from 'react-native-paper';
 
 const HomeScreen = ({navigation}: {navigation: any}) => {
   const saveConfigLogs = async () => {
-    
     try {
-      const jsonValue = JSON.stringify({motorValue: '2', engineValue: '2'});
-      await AsyncStorage.setItem('@config_logs', jsonValue);
+      const getConfigValue = await AsyncStorage.getItem('@config_logs');
+      const savedConfig = getConfigValue != null && JSON.parse(getConfigValue);
+      if (savedConfig) return;
+      const defaultConfig = JSON.stringify({motorValue: '2', engineValue: '2'});
+      await AsyncStorage.setItem('@config_logs', defaultConfig);
     } catch (e) {}
   };
 
@@ -39,8 +41,15 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
         onPress={() => navigation.navigate('Config')}>
         <Text style={styles.text}>Settings</Text>
       </Button>
+      <Button
+        style={{width: '70%', borderRadius: 8}}
+        buttonColor="#111b69"
+        mode="contained"
+        onPress={() => navigation.navigate('Diagnostic')}>
+        <Text style={styles.text}>Diagnostic</Text>
+      </Button>
       <View style={styles.imageView}>
-        <Image source={require('../../assets/logo.png')} style={styles.image} />
+        <Image source={require('../../assets/HomeScreenLogo.png')} style={styles.image} />
       </View>
     </View>
   );
@@ -59,15 +68,13 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '65%',
-    height: '100%'
+    height: '100%',
   },
   imageView: {
-    // borderWidth:1,
-    display:"flex",
-    // justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     width: '60%',
-    height:"20%"
+    height: '20%',
   },
 });
 

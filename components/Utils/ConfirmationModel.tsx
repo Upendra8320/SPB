@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    paddingVertical: 35,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -80,11 +80,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   button: {
-    margin: 10,
-    fontSize: 100,
+    margin: 4,
     fontWeight: "700",
     borderRadius: 8,
-    width:120
+    width:150,
   }
 });
 

@@ -1,19 +1,26 @@
 import React from 'react';
-import {StyleSheet, useColorScheme} from 'react-native';
-
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-
+import {StyleSheet, Text} from 'react-native';
+import { ConnectionStatusProvider } from './components/Utils/ConnectionStatusContext';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {lazy} from 'react';
 import Header from './components/Layout/Header';
-import ConfigScreen from './components/Pages/ConfigScreen';
+// import ConfigScreen from './components/Pages/ConfigScreen';
+// import LogScreen from './components/Pages/LogScreen';
+// import TestScreen from './components/Pages/TestScreen';
 import HomeScreen from './components/Pages/HomeScreen';
-import LogScreen from './components/Pages/LogScreen';
-import TestScreen from './components/Pages/TestScreen';
+
+// const Home = lazy(() => import('./components/Pages/HomeScreen'));
+const Test = lazy(() => import('./components/Pages/TestScreen'));
+const Config = lazy(() => import('./components/Pages/ConfigScreen'));
+const Log = lazy(() => import('./components/Pages/LogScreen'));
+const Monitor = lazy(() => import('./components/Pages/Monitor'));
+
 const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
   return (
+    <ConnectionStatusProvider>
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
@@ -23,15 +30,14 @@ function App(): React.JSX.Element {
         />
         <Stack.Screen
           name="Test"
-          component={TestScreen}
+          component={Test}
           options={{
             headerTitle: () => <Header />,
-            headerLeft: () => null,
           }}
         />
         <Stack.Screen
           name="Log"
-          component={LogScreen}
+          component={Log}
           options={{
             headerTitle: () => <Header />,
             headerLeft: () => null,
@@ -39,7 +45,15 @@ function App(): React.JSX.Element {
         />
         <Stack.Screen
           name="Config"
-          component={ConfigScreen}
+          component={Config}
+          options={{
+            headerTitle: () => <Header />,
+            headerLeft: () => null,
+          }}
+        />
+        <Stack.Screen
+          name="Diagnostic"
+          component={Monitor}
           options={{
             headerTitle: () => <Header />,
             headerLeft: () => null,
@@ -47,6 +61,7 @@ function App(): React.JSX.Element {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    </ConnectionStatusProvider>
   );
 }
 
